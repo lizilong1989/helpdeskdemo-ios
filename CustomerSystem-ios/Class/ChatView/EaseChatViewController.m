@@ -47,27 +47,40 @@
     CGFloat chatbarHeight = [EaseMessageToolBar defaultHeight];
     EMChatToolbarType barType = self.conversation.conversationType == eConversationTypeChat ? EMChatToolbarTypeChat : EMChatToolbarTypeGroup;
     self.chatToolbar = [[EaseMessageToolBar alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - chatbarHeight, self.view.frame.size.width, chatbarHeight) type:barType];
+    self.chatToolbar.delegate = self;
+    self.chatBarMoreView = (EaseChatBarMoreView*)[(EaseChatToolbar *)self.chatToolbar moreView];
+    self.faceView = (EaseFaceView*)[(EaseChatToolbar *)self.chatToolbar faceView];
+    self.recordView = (EaseRecordView*)[(EaseChatToolbar *)self.chatToolbar recordView];
     self.chatToolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
     
     self.showRefreshHeader = YES;
     self.delegate = self;
     self.dataSource = self;
     
+    //设置气泡
     [[EaseBaseMessageCell appearance] setSendBubbleBackgroundImage:[[UIImage imageNamed:@"chat_sender_bg"] stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
     [[EaseBaseMessageCell appearance] setRecvBubbleBackgroundImage:[[UIImage imageNamed:@"chat_receiver_bg"] stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
     
+    //设置头像
     [[EaseBaseMessageCell appearance] setAvatarSize:40.f];
     [[EaseBaseMessageCell appearance] setAvatarCornerRadius:20.f];
     
+    //设置语音播放图片
     [[EaseBaseMessageCell appearance] setSendMessageVoiceAnimationImages:@[[UIImage imageNamed:@"chat_sender_audio_playing_full"], [UIImage imageNamed:@"chat_sender_audio_playing_000"], [UIImage imageNamed:@"chat_sender_audio_playing_001"], [UIImage imageNamed:@"chat_sender_audio_playing_002"], [UIImage imageNamed:@"chat_sender_audio_playing_003"]]];
     [[EaseBaseMessageCell appearance] setRecvMessageVoiceAnimationImages:@[[UIImage imageNamed:@"chat_receiver_audio_playing_full"],[UIImage imageNamed:@"chat_receiver_audio_playing000"], [UIImage imageNamed:@"chat_receiver_audio_playing001"], [UIImage imageNamed:@"chat_receiver_audio_playing002"], [UIImage imageNamed:@"chat_receiver_audio_playing003"]]];
     
+    //不显示姓名
     [[EaseBaseMessageCell appearance] setMessageNameIsHidden:YES];
     
+    //删除多余功能
+    [self.chatBarMoreView removeItematIndex:5];
     [self.chatBarMoreView removeItematIndex:4];
     [self.chatBarMoreView removeItematIndex:3];
     
     [self _setupBarButtonItem];
+    
+    EaseEmotionManager *manager= [[EaseEmotionManager alloc] initWithType:EMEmotionDefault emotionRow:3 emotionCol:7 emotions:[EaseEmoji allEmoji]];
+    [self.faceView setEmotionManagers:@[manager]];
     
     [self tableViewDidTriggerHeaderRefresh];
     

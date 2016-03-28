@@ -46,7 +46,7 @@
                       didFinishLaunchingWithOptions:launchOptions
                                              appkey:[[EMIMHelper defaultHelper] appkey]
                                        apnsCertName:apnsCertName
-                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES],kEaseUISDKConfigIsUseLite:@(YES)}];
+                                        otherConfig:@{kSDKConfigEnableConsoleLogger:[NSNumber numberWithBool:YES]}];
     
 //    [self setupNotifiers];
     [[EMIMHelper defaultHelper] loginEasemobSDK];

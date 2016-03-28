@@ -77,7 +77,7 @@
     if (button.selected) {
         [self.inputTextView resignFirstResponder];
         
-        [self willShowBottomView:self.questionView];
+        [self performSelector:@selector(_willShowBottomView:) withObject:self.questionView];
     } else{
         //键盘也算一种底部扩展页面
         [self.inputTextView becomeFirstResponder];
